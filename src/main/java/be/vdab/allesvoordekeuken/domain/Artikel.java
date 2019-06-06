@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 @Entity
 @Table(name = "artikels")
 public class Artikel implements Serializable {
-    private long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
     @Id
     private long id;
     private String naam;
