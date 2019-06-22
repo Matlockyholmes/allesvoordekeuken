@@ -21,6 +21,8 @@ public class JpaArtikelRepositoryTest extends AbstractTransactionalJUnit4SpringC
     @Autowired
     private JpaArtikelRepository repository;
 
+    private final static String ARTIKELS = "artikels";
+
     public long idVanTestArtikel(){
         return super.jdbcTemplate.queryForObject("select id from artikels where naam='test'", Long.class);
     }
@@ -33,5 +35,13 @@ public class JpaArtikelRepositoryTest extends AbstractTransactionalJUnit4SpringC
     @Test
     public void findByOnbestaandeId(){
         assertThat(repository.findById(-1L)).isNotPresent();
+    }
+
+    @Test
+    public void findByNaam(){
+        assertThat(repository.findByNaam("test")).hasSize(super.countRowsInTableWhere(ARTIKELS, "naam like '%test%'"))
+                .extracting(artikel -> artikel.getNaam().toLowerCase())
+                .allSatisfy(naam -> assertThat(naam).contains("test"))
+                .isSorted();
     }
 }
