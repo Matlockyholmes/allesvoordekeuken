@@ -39,9 +39,9 @@ public class JpaArtikelRepositoryTest extends AbstractTransactionalJUnit4SpringC
 
     @Test
     public void findByNaam(){
-        assertThat(repository.findByNaam("test")).hasSize(super.countRowsInTableWhere(ARTIKELS, "naam like '%test%'"))
+        assertThat(repository.findByNaam("es")).hasSize(super.countRowsInTableWhere(ARTIKELS, "naam like '%es%'"))
                 .extracting(artikel -> artikel.getNaam().toLowerCase())
-                .allSatisfy(naam -> assertThat(naam).contains("test"))
+                .allSatisfy(naam -> assertThat(naam).contains("es"))
                 .isSorted();
     }
 }
