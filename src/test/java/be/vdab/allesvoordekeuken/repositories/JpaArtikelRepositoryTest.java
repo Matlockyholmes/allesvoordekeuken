@@ -10,6 +10,8 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.math.BigDecimal;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
@@ -43,5 +45,11 @@ public class JpaArtikelRepositoryTest extends AbstractTransactionalJUnit4SpringC
                 .extracting(artikel -> artikel.getNaam().toLowerCase())
                 .allSatisfy(naam -> assertThat(naam).contains("es"))
                 .isSorted();
+    }
+
+    @Test
+    public void algemeneVerhoging(){
+        assertThat(repository.algemeneVerhoging(BigDecimal.TEN)).isEqualTo(super.countRowsInTable(ARTIKELS));
+        assertThat(super.jdbcTemplate.queryForObject("select verkoopprijs from artikels where id=?", BigDecimal.class, idVanTestArtikel())).isEqualByComparingTo("1.1");
     }
 }
