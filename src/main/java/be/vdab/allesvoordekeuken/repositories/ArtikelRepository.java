@@ -10,4 +10,5 @@ public interface ArtikelRepository {
     Optional<Artikel> findById(long id);
     List<Artikel> findByNaam(String naam);
     int algemeneVerhoging(BigDecimal percentage);
+    void create(Artikel artikel);
 }

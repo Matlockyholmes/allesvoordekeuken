@@ -5,8 +5,10 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 @Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @Table(name = "artikels")
-public class Artikel implements Serializable {
+@DiscriminatorColumn(name = "soort")
+public abstract class Artikel implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,7 +17,7 @@ public class Artikel implements Serializable {
     private BigDecimal aankoopprijs;
     private BigDecimal verkoopprijs;
 
-    public Artikel() {
+    protected Artikel() {
     }
 
     public Artikel(String naam, BigDecimal aankoopprijs, BigDecimal verkoopprijs) {

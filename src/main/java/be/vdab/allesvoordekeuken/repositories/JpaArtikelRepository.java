@@ -35,4 +35,9 @@ public class JpaArtikelRepository implements ArtikelRepository {
                 .setParameter("factor", factor)
                 .executeUpdate();
     }
+
+    @Override
+    public void create(Artikel artikel) {
+        manager.persist(artikel);
+    }
 }
