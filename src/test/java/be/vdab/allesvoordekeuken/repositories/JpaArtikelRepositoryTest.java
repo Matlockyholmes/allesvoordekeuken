@@ -1,6 +1,7 @@
 package be.vdab.allesvoordekeuken.repositories;
 
 import be.vdab.allesvoordekeuken.domain.FoodArtikel;
+import be.vdab.allesvoordekeuken.domain.Korting;
 import be.vdab.allesvoordekeuken.domain.NonFoodArtikel;
 import org.junit.Before;
 import org.junit.Test;
@@ -95,5 +96,9 @@ public class JpaArtikelRepositoryTest extends AbstractTransactionalJUnit4SpringC
     public void createNonFoodArtikel(){
         repository.create(nonFoodArtikel);
         assertThat(super.countRowsInTableWhere(ARTIKELS, "id=" + idVanTestNonFoodArtikel())).isOne();
+    }
+    @Test
+    public void kortingenLezen(){
+        assertThat(repository.findById(idVanTestArtikel()).get().getKortingen()).containsOnly(new Korting(1, BigDecimal.ONE));
     }
 }
