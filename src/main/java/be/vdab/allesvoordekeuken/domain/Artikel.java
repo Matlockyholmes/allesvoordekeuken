@@ -12,6 +12,7 @@ import java.util.Set;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @Table(name = "artikels")
 @DiscriminatorColumn(name = "soort")
+@NamedEntityGraph(name = "Artikel.OP_NAAM", attributeNodes = @NamedAttributeNode("artikelGroep"))
 public abstract class Artikel implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -27,6 +28,7 @@ public abstract class Artikel implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "artikelgroepid")
     private ArtikelGroep artikelGroep;
+    private static final String OP_NAAM = "Artikel.opNaam";
 
     protected Artikel() {
     }

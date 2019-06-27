@@ -1,9 +1,6 @@
 package be.vdab.allesvoordekeuken.repositories;
 
-import be.vdab.allesvoordekeuken.domain.ArtikelGroep;
-import be.vdab.allesvoordekeuken.domain.FoodArtikel;
-import be.vdab.allesvoordekeuken.domain.Korting;
-import be.vdab.allesvoordekeuken.domain.NonFoodArtikel;
+import be.vdab.allesvoordekeuken.domain.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,6 +14,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.persistence.EntityManager;
 import java.math.BigDecimal;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -77,10 +75,14 @@ public class JpaArtikelRepositoryTest extends AbstractTransactionalJUnit4SpringC
 
     @Test
     public void findByNaam(){
-        assertThat(repository.findByNaam("es")).hasSize(super.countRowsInTableWhere(ARTIKELS, "naam like '%es%'"))
+        List<Artikel> artikels = repository.findByNaam("es");
+        manager.clear();
+        assertThat(artikels)
+                .hasSize(super.jdbcTemplate.queryForObject(
+                        "select count(*) from artikels where naam like '%es%'", Integer.class))
                 .extracting(artikel -> artikel.getNaam().toLowerCase())
-                .allSatisfy(naam -> assertThat(naam).contains("es"))
-                .isSorted();
+                .allSatisfy(artikel -> assertThat(artikel).contains("es")).isSorted();
+        assertThat(artikels).extracting(artikel->artikel.getArtikelGroep().getNaam());
     }
 
     @Test

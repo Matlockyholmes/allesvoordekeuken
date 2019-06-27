@@ -25,7 +25,9 @@ public class JpaArtikelRepository implements ArtikelRepository {
     @Override
     public List<Artikel> findByNaam(String woord) {
         return manager.createNamedQuery("Artikel.findByNaam", Artikel.class)
-                .setParameter("naamfragment", '%' + woord + '%').getResultList();
+                .setParameter("naamfragment", '%' + woord + '%')
+                .setHint("javax.persistence.loadgraph", manager.createEntityGraph("Artikel.OP_NAAM"))
+                .getResultList();
     }
 
     @Override
